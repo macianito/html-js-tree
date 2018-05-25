@@ -1,0 +1,1 @@
+Fer accions quan es clica a sobre node, o sigui passalli lelement al handler

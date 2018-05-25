@@ -1,0 +1,82 @@
+.tree {
+  padding: 5px 25px;
+  font-size: 17px;
+}
+
+.tree li ul {
+  display: none;
+  padding: 5px 0 0 17px;
+}
+
+.tree li.selected > a {
+  color: #55B2B5;
+}
+
+.tree .has-children + ul,
+.tree .has-children + a + ul {
+  border-left: 1px solid #777 !important;
+}
+
+
+.tree li {
+  list-style: none;
+  cursor: pointer;
+  position: relative;
+  margin: 4px 0;
+  color: #555;
+}
+
+.tree li:before {
+  position: absolute;
+  left: -18px;
+  content: url(../imgs/middletree.png);
+  padding-bottom: 5px;
+}
+
+.tree li:last-child:before {
+  background: #ededed;
+  content: url(../imgs/finaltree.png);
+}
+
+.tree > li:before,
+.tree > li:last-child:before {
+  content: url(../imgs/stripetree.png);
+}
+
+/* .tree li.open:before {
+  content: '';
+} */
+
+.tree li.selected {
+  color: #55B2B5;
+}
+
+.tree .has-children:before {
+  position: absolute;
+  content: "+";
+  background: #ededed;
+  border: 1px solid #797979;
+  color: #797979;
+  /* outline: 3px solid #ededed; */
+  /* padding: 1px 2px; */
+  width: 11px !important;
+  /* border-radius: 22%; */
+  height: 12px !important;
+  left: -19px;
+  text-align: center;
+  font: normal 17px/15px Helvetica, sans-serif;
+  box-sizing: initial;
+}
+.tree .open > .has-children:before {
+  content: "-";
+  line-height: 12px !important;;
+}
+
+/* .tree li.open > ul,
+.tree li.selected > ul {
+  display: block;
+} */
+
+.tree li.open > ul {
+  display: block;
+}

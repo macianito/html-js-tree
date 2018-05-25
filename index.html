@@ -1,0 +1,99 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Tree</title>
+    <!-- <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.min.js"></script> -->
+    <script type="text/javascript" src="./jquery-2.2.0.min.js"></script>
+    <script type="text/javascript" src="js/utils.js"></script>
+    <script type="text/javascript" src="js/tree.js"></script>
+    <!-- <link rel="stylesheet" href="bootstrap/css/bootstrap.css" type="text/css" media="all" /> -->
+    <link rel="stylesheet" href="css/tree.css" type="text/css" media="all" />
+
+
+  </head>
+  <body>
+
+    <div id="container">
+
+      <a href="javascript: addElement()">ADD ELEMENT</a>
+      <a href="javascript: removeTree()">REMOVE TREE</a>
+      <a href="javascript: tree1.expandTree()">EXPAND TREE</a>
+      <a href="javascript: tree1.colapseTree()">COLAPSE TREE</a>
+        <ul id="tree1" class="tree">
+          <!-- <li id="root"><a href="#">ROOT</a>
+            <ul> -->
+            <li id="i1"><a href="#">Item 1</a></li>
+
+            <li id="i2"><a href="#">Item 2</a>
+              <ul>
+
+                <li id="i3"><a href="#">Item 2.1</a></li>
+
+                <li id="i4"><a href="#">Item 2.2</a>
+                  <ul>
+                    <li id="i5"><a href="#">Item 2.2.1</a></li>
+                  </ul>
+                </li>
+
+                <li id="i8"><a href="#">Item 2.3</a></li>
+
+              </ul>
+            </li>
+
+            <li id="i9"><a href="#">Item 3</a>
+              <ul>
+                <li id="i10"><a href="#">Item 3.1</a></li>
+                <li id="i11"><a href="#">Item 3.2</a></li>
+                <li id="i12"><a href="#">Item 3.3</a></li>
+              </ul>
+            </li>
+
+            <li id="i13"><a href="#">Item 4</a></li>
+
+            <li id="i14"><a href="#">Item 5</a></li>
+            <!-- </ul> -->
+          </li>
+        </ul>
+
+
+
+    </div>
+
+
+    <style>
+      .clearfix:after {
+     visibility: hidden;
+     display: block;
+     font-size: 0;
+     content: " ";
+     clear: both;
+     height: 0;
+     }
+    .clearfix { display: inline-block; }
+    /* start commented backslash hack \*/
+    * html .clearfix { height: 1%; }
+    .clearfix { display: block; }
+    /* close commented backslash hack */
+
+    body {
+      font-family: "Oswald", Helvetica, sans-serif;
+      padding: 11px;
+      background: #fff;
+    }
+
+    input, select {
+      font-family: "Didact Gothic", Helvetica, sans-serif;
+    }
+
+    #container {
+      width: 1224px;
+      margin: 0 auto;
+      background: #fff;
+      box-sizing: border-box;
+      padding: 17px;
+    }
+    </style>
+
+
+  </body>
+</html>
