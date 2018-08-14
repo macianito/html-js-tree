@@ -79,6 +79,7 @@
   text-align: center;
   font: normal 15px/10px Helvetica, sans-serif;
   box-sizing: initial;
+  overflow: hidden;
 }
 .tree .open > .has-children:before {
   content: "-";
@@ -93,7 +94,7 @@
 
   -webkit-transition: all .5s ease-in-out; /* Safari */
   transition: all .5s ease-in-out;
-  overflow-y: hidden;
+  overflow: hidden;
 }
 
 .tree li.open > ul {
