@@ -137,6 +137,30 @@ this.Tree = (function($) {
 
      };
 
+     /**
+    * Remove children of a subtree
+    *
+    * @public
+    *
+    * @param {Object|String} element - element or id of the element to remove children from
+    *
+    */
+    Tree.prototype.removeSubTreeChildren = function(element) {
+
+       if(typeof element === 'string') { // es un id
+         element = document.getElementById(element);
+       }
+
+       var children = this.getSubTree(element, 1);
+
+       for(var i in children) {
+         this.removeElement(children[i].id);
+       }
+
+     };
+
+
+
     /**
      * Check if element has children
      *
@@ -153,9 +177,11 @@ this.Tree = (function($) {
          element = document.getElementById(element);
        }
 
-       var ulChild = $(' > ul', element);
+       //var ulChild = $(' > ul', element);
+       var ulChild = $(element).children('ul');
 
-       return ulChild.length > 0 && $(' > li[id="null"]', ulChild).length == 0;
+       // there is list which is not empty
+       return ulChild.length > 0 && $(ulChild).children('li').length != 0;
 
      };
 
@@ -341,10 +367,15 @@ this.Tree = (function($) {
                          text: elementOptions.label
                      }); */
 
-         if(append) {
-           ulList.appendChild(liElement);
-         } else {
-           ulList.insertBefore(liElement, ulList.childNodes[0]);
+
+         if(elementOptions.id != null) { // the node will not be created but generates empty ul list
+
+           if(append) {
+             ulList.appendChild(liElement);
+           } else {
+             ulList.insertBefore(liElement, ulList.childNodes[0]);
+           }
+
          }
 
          return;
@@ -388,7 +419,7 @@ this.Tree = (function($) {
        * @param {Object|String} element - node or id of the node to remove
        *
        */
-      Tree.prototype.removeElement = function(element) { // idParent : afegeix un element al final segons un idParent
+      Tree.prototype.removeElement = function(element) {
 
          if(typeof element === 'object') {
            element = element.id;
@@ -652,7 +683,9 @@ this.Tree = (function($) {
 
          if (evt.target && evt.target.matches('a')) {
 
-           self.onClick(evt, evt.target);
+           var element = $(evt.target).parent();
+
+           self.onClick(evt, element[0]);
 
            return false; // avoid default behabior and propagation
 
@@ -682,7 +715,9 @@ this.Tree = (function($) {
 
            evt.preventDefault();
 
-           self.onDblClick(evt, evt.target);
+           var element = $(evt.target).parent();
+
+           self.onDblClick(evt, element[0]);
 
            return false; // avoid default behabior and propagation
 
