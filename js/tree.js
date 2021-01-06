@@ -54,6 +54,8 @@ this.Tree = (function($) {
 
       this.idRoot = options.idRoot || 'root';
 
+      this.classItem = options.classItem || 'tree-item';
+  
       _initialize.call(this);
 
     }
@@ -355,10 +357,16 @@ this.Tree = (function($) {
              aElement = document.createElement('a');
 
          liElement.setAttribute('id', elementOptions.id);
+		 
+		 liElement.setAttribute('class', this.classItem);
+		 
+		 
 
          aElement.innerHTML = elementOptions.label;
 
          aElement.setAttribute('href', elementOptions.href || '#');
+		 
+		 aElement.setAttribute('class', this.classItem + '-label');
 
          liElement.appendChild(aElement);
 
@@ -546,16 +554,18 @@ this.Tree = (function($) {
        if(this.addRoot) {
          this.treeObj.html('<li id="' + this.idRoot + '"><a href="' + this.linkRoot + '">ROOT</a><ul>' + this.treeObj.html() + '</ul>');
        }
+	   
+	   var self = this;
 
        this.treeObj.find('li').each(function() {
 
-         var self = $(this);
+         var item = $(this);
 
-         if(self.find('ul').length > 0) {
-           self.prepend(_openCloseControl());
+         if(item.find('ul').length > 0) {
+           item.prepend(_openCloseControl());
          }
 
-         self.addClass('menu-item');
+         item.addClass(self.classItem);
 
        });
 
