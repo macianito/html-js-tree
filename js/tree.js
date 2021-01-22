@@ -211,7 +211,7 @@ this.Tree = (function($) {
 
           if(ulList.length == 0) {  // si no te fills retorna nomes element
 
-            subTree.push(self.getElementObject(element.id));
+            //subTree.push(self.getElementObject(element.id));
 
             return subTree;
 
@@ -440,7 +440,7 @@ this.Tree = (function($) {
          element.remove();
 
          // sino te germans hem desborrar l'ul i modificar pare ja que no te fills
-         if(parent.children('li').size() == 0) {
+         if(parent.children('li').length == 0) {
            parent.parent()
              .removeClass('open')
              .children('.has-children')
