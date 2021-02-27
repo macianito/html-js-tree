@@ -463,7 +463,7 @@ this.Tree = (function($) {
     Tree.prototype.selectElement = function(idElement, keepSelecteds, dontOpenPath) { // idParent : afegeix un element al final segons un idParent
 
        if(!keepSelecteds) { // no desecciona els que estan seleccionat
-         this.treeObj.find('.menu-item.selected').removeClass('selected open');
+         this.treeObj.find('.' + this.classItem + '.selected').removeClass('selected open');
        }
 
        $("#" + idElement).addClass('selected');
