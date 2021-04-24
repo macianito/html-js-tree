@@ -158,9 +158,35 @@ this.Tree = (function($) {
        for(var i in children) {
          this.removeElement(children[i].id);
        }
+	   
+	   // delete children list
+	   $(element).children('ul').remove();   
+	   $(element)
+        .removeClass('open')
+        .children('.has-children')
+          .remove();
 
      };
 
+     /**
+     * Set has children flag
+     *
+     * @public
+     *
+     * @param {Object|String} element - element or id of the element to check
+     *
+     * @returns {void}
+     *
+     */
+     Tree.prototype.setHasChildren = function(element) { // determina si un node te fills
+
+       if(typeof element === 'string') { // es un id
+         element = document.getElementById(element);
+       }
+	   
+	   $(element).prepend(_openCloseControl());
+
+     };
 
 
     /**
