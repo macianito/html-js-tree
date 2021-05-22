@@ -53,6 +53,8 @@ this.Tree = (function($) {
       this.linkRoot = options.linkRoot || '#';
 
       this.idRoot = options.idRoot || 'root';
+	  
+	  this.classRoot = options.classRoot || '';
 
       this.classItem = options.classItem || 'tree-item';
   
@@ -101,7 +103,7 @@ this.Tree = (function($) {
      *
      * @public
      *
-     * @param {Object} _old - subtree to move
+     * @param {Object} _old - parent of the subtree to move
      * @param {Object} _new - new parent.
      *
      */
@@ -140,7 +142,7 @@ this.Tree = (function($) {
      };
 
      /**
-    * Remove children of a subtree
+    * Remove children of an element
     *
     * @public
     *
@@ -153,7 +155,7 @@ this.Tree = (function($) {
          element = document.getElementById(element);
        }
 
-       var children = this.getSubTree(element, 1);
+       var children = this.getSubTreeChildren(element);
 
        for(var i in children) {
          this.removeElement(children[i].id);
@@ -212,6 +214,31 @@ this.Tree = (function($) {
        return ulChild.length > 0 && $(ulChild).children('li').length != 0;
 
      };
+	 
+	 /**
+     * Get the parent id of an element
+     *
+     * @public
+     *
+     * @param {Object|String} element - element or id of the element
+     *
+     * @returns {Atring} - returns the id of the parent.
+     *
+     */
+     Tree.prototype.getParent = function(element) { // determina si un node te fills
+	   
+       if(typeof element === 'string') { // es un id
+         element = document.getElementById(element);
+       }
+
+       var parent = $(element).parent().closest('.' + this.classItem);
+	   
+	   if(parent.length > 0)
+	     return parent[0].id;
+ 
+       return null;
+
+     };
 
      /**
      * Get subtree as an object
@@ -237,7 +264,7 @@ this.Tree = (function($) {
 
           if(ulList.length == 0) {  // si no te fills retorna nomes element
 
-            //subTree.push(self.getElementObject(element.id));
+            subTree.push(self.getElementObject(element.id));
 
             return subTree;
 
@@ -266,6 +293,42 @@ this.Tree = (function($) {
             return subTree;
 
           }
+
+      };
+
+     /**
+     * Get children of an element and return as an object
+     *
+     * @public
+     *
+     * @param {Object|String} element - parent element or id of the parent element
+     *
+     * @returns {Object} - object representation of the subtree.
+     *
+     */
+     Tree.prototype.getSubTreeChildren = function(element) {
+
+          if(typeof element === 'string') {
+            element = document.getElementById(element);
+          }
+
+          var children = [],
+              ulList = $(element).children('ul'),
+              self = this,
+              liList = null;
+
+
+          liList = ulList.children('li');
+
+		  liList.each(function() {
+
+		    var currentObj = self.getElementObject(this.id);
+
+			children.push(currentObj);
+
+		  });
+
+		  return children;
 
       };
 
@@ -578,7 +641,7 @@ this.Tree = (function($) {
 
 
        if(this.addRoot) {
-         this.treeObj.html('<li id="' + this.idRoot + '"><a href="' + this.linkRoot + '">ROOT</a><ul>' + this.treeObj.html() + '</ul>');
+         this.treeObj.html('<li id="' + this.idRoot + '" class="' + this.classRoot + '" ><a href="' + this.linkRoot + '">ROOT</a><ul>' + this.treeObj.html() + '</ul>');
        }
 	   
 	   var self = this;
