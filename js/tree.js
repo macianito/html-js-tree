@@ -53,11 +53,11 @@ this.Tree = (function($) {
       this.linkRoot = options.linkRoot || '#';
 
       this.idRoot = options.idRoot || 'root';
-	  
-	  this.classRoot = options.classRoot || '';
+
+      this.classRoot = options.classRoot || '';
 
       this.classItem = options.classItem || 'tree-item';
-  
+
       _initialize.call(this);
 
     }
@@ -160,10 +160,10 @@ this.Tree = (function($) {
        for(var i in children) {
          this.removeElement(children[i].id);
        }
-	   
-	   // delete children list
-	   $(element).children('ul').remove();   
-	   $(element)
+
+       // delete children list
+       $(element).children('ul').remove();
+       $(element)
         .removeClass('open')
         .children('.has-children')
           .remove();
@@ -185,8 +185,8 @@ this.Tree = (function($) {
        if(typeof element === 'string') { // es un id
          element = document.getElementById(element);
        }
-	   
-	   $(element).prepend(_openCloseControl());
+
+       $(element).prepend(_openCloseControl());
 
      };
 
@@ -214,8 +214,8 @@ this.Tree = (function($) {
        return ulChild.length > 0 && $(ulChild).children('li').length != 0;
 
      };
-	 
-	 /**
+
+     /**
      * Get the parent id of an element
      *
      * @public
@@ -225,17 +225,19 @@ this.Tree = (function($) {
      * @returns {Atring} - returns the id of the parent.
      *
      */
+
      Tree.prototype.getParent = function(element) { // determina si un node te fills
-	   
+
        if(typeof element === 'string') { // es un id
          element = document.getElementById(element);
        }
 
        var parent = $(element).parent().closest('.' + this.classItem);
-	   
-	   if(parent.length > 0)
-	     return parent[0].id;
- 
+
+       if(parent.length > 0)
+         return parent[0].id;
+
+
        return null;
 
      };
@@ -253,6 +255,35 @@ this.Tree = (function($) {
      */
      Tree.prototype.getSubTree = function(element, level) {
 
+        if(typeof element === 'string') {
+          element = document.getElementById(element);
+        }
+
+        if(!level)
+          level = 0;
+
+        var subTree = [this.getElementObject(element.id)],
+            liList = $(element).children('ul').children('li'),
+            self = this;
+
+        //if(liList.length > 0)
+        subTree[0].children = [];
+
+
+        liList.each(function() {
+
+          subTree[0].children.push(self.getSubTree(this, level + 1));
+
+        });
+
+        if(level == 0)
+          return [subTree[0]];
+
+        return subTree[0];
+
+     };
+     /* Tree.prototype.getSubTree = function(element, level) {
+
           if(typeof element === 'string') {
             element = document.getElementById(element);
           }
@@ -264,7 +295,8 @@ this.Tree = (function($) {
 
           if(ulList.length == 0) {  // si no te fills retorna nomes element
 
-            subTree.push(self.getElementObject(element.id));
+            if(!level) // es nomes un element el subtree
+              subTree.push(self.getElementObject(element.id));
 
             return subTree;
 
@@ -294,7 +326,7 @@ this.Tree = (function($) {
 
           }
 
-      };
+      }; */
 
      /**
      * Get children of an element and return as an object
@@ -320,15 +352,15 @@ this.Tree = (function($) {
 
           liList = ulList.children('li');
 
-		  liList.each(function() {
+          liList.each(function() {
 
-		    var currentObj = self.getElementObject(this.id);
+            var currentObj = self.getElementObject(this.id);
 
-			children.push(currentObj);
+            children.push(currentObj);
 
-		  });
+          });
 
-		  return children;
+          return children;
 
       };
 
@@ -370,11 +402,17 @@ this.Tree = (function($) {
           parent = document.getElementById(parent);
         }
 
+        if(!Array.isArray(elements))
+          elements = [elements];
+
+
+        console.log('addSubTree', parent, elements)
+
         for(var i = 0; i < elements.length; i++) {
 
           this.addElement(parent, elements[i], append);
 
-          if(elements[i].children) {
+          if(typeof(elements[i].children) != 'undefined' && elements[i].children.length > 0) {
             this.addSubTree(document.getElementById(elements[i].id), elements[i].children, append);
           }
 
@@ -400,11 +438,12 @@ this.Tree = (function($) {
              anchor = element.children('a');
 
          return {
-           id: element[0].id,
-           label: anchor.contents().filter(function() {
-             return this.nodeType === 3;
-           }).text(),
-           href: anchor[0].href || '#'
+           id      : element[0].id,
+           label   : anchor.contents().filter(function() {
+                       return this.nodeType === 3;
+                     }).text(),
+           href    : anchor[0].href || '#',
+           classes : element[0].getAttribute('class')
          }; // inmediate child node text
 
       };
@@ -418,11 +457,11 @@ this.Tree = (function($) {
        * @public
        *
        * @param {Object} parent - parent to add node to
-       * @param {Object} elementOptions - options
+       * @param {Object} elementObj - options
        * @param {boolean} append - Set if node will be appended
        *
        */
-      Tree.prototype.addElement = function(parent, elementOptions, append) { // idParent : afegeix un element al final segons un idParent
+      Tree.prototype.addElement = function(parent, elementObj, append) { // idParent : afegeix un element al final segons un idParent
 
 
          //console.log(parent[0])
@@ -445,27 +484,29 @@ this.Tree = (function($) {
          var liElement = document.createElement('li'),
              aElement = document.createElement('a');
 
-         liElement.setAttribute('id', elementOptions.id);
-		 
-		 liElement.setAttribute('class', this.classItem);
-		 
-		 
+         liElement.setAttribute('id', elementObj.id);
 
-         aElement.innerHTML = elementOptions.label;
+         //liElement.setAttribute('class', this.classItem);
 
-         aElement.setAttribute('href', elementOptions.href || '#');
-		 
-		 aElement.setAttribute('class', this.classItem + '-label');
+         liElement.setAttribute('class', elementObj.classes);
+
+
+
+         aElement.innerHTML = elementObj.label;
+
+         aElement.setAttribute('href', elementObj.href || '#');
+
+         aElement.setAttribute('class', this.classItem + '-label');
 
          liElement.appendChild(aElement);
 
          /* $('<li></li>', {
-                         id: elementOptions.id,
-                         text: elementOptions.label
+                         id: elementObj.id,
+                         text: elementObj.label
                      }); */
 
 
-         if(elementOptions.id != null) { // the node will not be created but generates empty ul list
+         if(elementObj.id != null) { // the node will not be created but generates empty ul list
 
            if(append) {
              ulList.appendChild(liElement);
@@ -643,8 +684,8 @@ this.Tree = (function($) {
        if(this.addRoot) {
          this.treeObj.html('<li id="' + this.idRoot + '" class="' + this.classRoot + '" ><a href="' + this.linkRoot + '">ROOT</a><ul>' + this.treeObj.html() + '</ul>');
        }
-	   
-	   var self = this;
+
+       var self = this;
 
        this.treeObj.find('li').each(function() {
 

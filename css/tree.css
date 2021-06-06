@@ -95,7 +95,7 @@
 
 .tree li.open > ul {
   display: block;
-  max-height: 500px;
+  max-height: initial;
 }
 
 .tree li.selected > a {
